@@ -61,6 +61,45 @@
 
 <!-- End shopping basket -->
 
+<!-- Customer entry -->
+
+<h1>Please enter your details below</h1>
+
+<EditForm OnValidSubmit="PlaceOrder" Model="@State.Basket.Customer">
+    <DataAnnotationsValidator />
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Name">Name:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@State.Basket.Customer.Name" />
+            <ValidationMessage For="@(() => State.Basket.Customer.Name)" />
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Street">Street:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@State.Basket.Customer.Street" />
+            <ValidationMessage For="@(() => State.Basket.Customer.Street)" />
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="City">City:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@State.Basket.Customer.City" />
+            <ValidationMessage For="@(() => State.Basket.Customer.City)" />
+        </div>
+    </div>
+    <div class="form-group mb-0">
+        <button class="btn btn-primary" type="submit" id="BtnCheckout">
+            Checkout
+        </button>
+    </div>
+</EditForm>
+
+<!-- End customer entry -->
+
+@State.ToJson();
+
 
 @code {
 
@@ -90,5 +129,7 @@
         Console.WriteLine($"Removing pizza at pos {pos}");
         State.Basket.RemoveAt(pos);
     }
+
+    void PlaceOrder() => Console.WriteLine("Placing order");
 
 }
