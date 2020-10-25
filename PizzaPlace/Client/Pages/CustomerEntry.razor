@@ -1,0 +1,66 @@
+﻿<h1>@Title</h1>
+
+<EditForm OnValidSubmit="@Submit" Model="@Customer">
+    <DataAnnotationsValidator />
+
+    <InputWatcher FieldChanged="@FieldChanged" @ref="inputWatcher" />
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Name">Name:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@Customer.Name" />
+            <ValidationMessage For="@(() => Customer.Name)" />
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Street">Street:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@Customer.Street" />
+            <ValidationMessage For="@(() => Customer.Street)" />
+        </div>
+    </div>
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="City">City:</label>
+        <div class="col-sm-9">
+            <InputText class="form-control" @bind-Value="@Customer.City" />
+            <ValidationMessage For="@(() => Customer.City)" />
+        </div>
+    </div>
+    <div class="form-group mb-0">
+        <button class="@ButtonClass"
+                type="submit"
+                id="BtnCheckout"
+                disabled="@isInvalid">
+            @ButtonTitle
+        </button>
+    </div>
+</EditForm>
+
+@code {
+    InputWatcher inputWatcher = default!;
+    bool isInvalid = true;
+
+    void FieldChanged(string fieldName)
+    {
+        CustomerChanged.InvokeAsync(Customer);
+        isInvalid = !inputWatcher.Validate();
+    }
+
+    [Parameter]
+    public string Title { get; set; } = default!;
+
+    [Parameter]
+    public string ButtonTitle { get; set; } = default!;
+
+    [Parameter]
+    public string ButtonClass { get; set; } = default!;
+
+    [Parameter]
+    public Customer Customer { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback Submit { get; set; }
+
+    [Parameter]
+    public EventCallback<Customer> CustomerChanged { get; set; }
+}
