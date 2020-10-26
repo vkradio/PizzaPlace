@@ -17,5 +17,7 @@ namespace PizzaPlace.Shared
         [Required(ErrorMessage = "City is required")]
         [StringLength(50)]
         public string City { get; set; } = default!;
+
+        public Order? Order { get; set; }
     }
 }

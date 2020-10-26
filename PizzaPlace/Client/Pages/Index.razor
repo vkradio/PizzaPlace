@@ -2,11 +2,12 @@
 
 @inject IMenuService menuService
 @inject IOrderService orderService
+@inject State state 
 
 <!-- Menu -->
 
 <PizzaList Title="Our selection of pizzas"
-           Menu="@State.Menu"
+           Menu="@state.Menu"
            Selected="@(async (pizza) => await AddToBasket(pizza))" />
 
 <!-- End menu -->
@@ -14,8 +15,8 @@
 <!-- Shopping basket -->
 
 <ShoppingBasket Title="Your current order"
-                Basket="@State.Basket"
-                GetPizzaFromId="@State.Menu.GetPizza"
+                Basket="@state.Basket"
+                GetPizzaFromId="@state.Menu.GetPizza"
                 Selected="@((pos) => RemoveFromBasket(pos))" />
 
 <!-- End shopping basket -->
@@ -25,31 +26,29 @@
 <CustomerEntry Title="Please enter your details below"
                ButtonTitle="Checkout"
                ButtonClass="btn btn-primary"
-               @bind-Customer="@State.Basket.Customer"
+               @bind-Customer="@state.Basket.Customer"
                Submit="@PlaceOrder" />
 
 <!-- End customer entry -->
 
-@State.ToJson();
+@state.ToJson();
 
 
 @code {
-    State State { get; } = new State();
-
-    protected override async Task OnInitializedAsync() => State.Menu = await menuService.GetMenu();
+    protected override async Task OnInitializedAsync() => state.Menu = await menuService.GetMenu();
 
     Task AddToBasket(Pizza pizza)
     {
         Console.WriteLine($"Added pizza {pizza.Name}");
-        State.Basket.Add(pizza.Id);
+        state.Basket.Add(pizza.Id);
         return Task.CompletedTask;
     }
 
     void RemoveFromBasket(int pos)
     {
         Console.WriteLine($"Removing pizza at pos {pos}");
-        State.Basket.RemoveAt(pos);
+        state.Basket.RemoveAt(pos);
     }
 
-    async Task PlaceOrder() => await orderService.PlaceOrder(State.Basket);
+    async Task PlaceOrder() => await orderService.PlaceOrder(state.Basket);
 }

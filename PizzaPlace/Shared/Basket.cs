@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PizzaPlace.Shared
 {
@@ -6,7 +7,8 @@ namespace PizzaPlace.Shared
     {
         public Customer Customer { get; set; } = new Customer();
 
-        public List<int> Orders { get; } = new List<int>();
+        [SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Setter is required by System.Text.Json")]
+        public List<int> Orders { get; set; } = new List<int>();
 
         public bool HasPaid { get; set; }
 
