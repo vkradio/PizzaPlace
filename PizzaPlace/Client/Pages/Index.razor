@@ -3,12 +3,14 @@
 @inject IMenuService menuService
 @inject IOrderService orderService
 @inject State state 
+@inject NavigationManager navi;
 
 <!-- Menu -->
 
 <PizzaList Title="Our selection of pizzas"
            Menu="@state.Menu"
-           Selected="@(async (pizza) => await AddToBasket(pizza))" />
+           Selected="@(async (pizza) => await AddToBasket(pizza))"
+           ShowPizzaInformation="ShowPizzaInformation" />
 
 <!-- End menu -->
 
@@ -51,4 +53,10 @@
     }
 
     async Task PlaceOrder() => await orderService.PlaceOrder(state.Basket);
+
+    void ShowPizzaInformation(Pizza selected)
+    {
+        state.CurrentPizza = selected;
+        Task.Run(() => navi.NavigateTo("/pizzainfo"));
+    }
 }

@@ -1,0 +1,24 @@
+﻿@page "/pizzainfo"
+
+@inject State state 
+
+<h2>Pizza @state.CurrentPizza!.Name Details</h2>
+
+<div class="row">
+    <div class="col">
+        @state.CurrentPizza!.Name
+    </div>
+    <div class="col">
+        @state.CurrentPizza!.Price
+    </div>
+    <div class="col">
+        <img src="@SpicinessImage(state.CurrentPizza!.Spiciness)" alt="@state.CurrentPizza!.Spiciness" />
+    </div>
+    <div class="col">
+        <a class="btn btn-primary" href="/">Menu</a>
+    </div>
+</div>
+
+@code {
+    string SpicinessImage(Spiciness spiciness) => $"images/{spiciness.ToString().ToLowerInvariant()}.png";
+}
